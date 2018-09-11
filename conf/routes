@@ -1,0 +1,2 @@
+# GET     /server/$domain<[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}>                           net.ttk1.ServerListPing.ping(domain: String)
+GET     /server/$domain<[a-zA-Z0-9\.]*>                           net.ttk1.ServerListPing.ping(domain: String)
