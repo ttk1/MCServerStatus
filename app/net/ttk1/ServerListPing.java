@@ -9,17 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServerListPing extends Controller {
-    private static final int PORT = 25565;
     private static final int PROTOCOL_VERSION = 0;
 
-    public Result ping(String domain) {
-        String serverInfo = getInfo(domain);
-        return ok(serverInfo).as("text/json");
+    public Result ping(String host, int port) {
+        return badRequest();
+
+        //String response = sendPing(host, port);
+        //return ok(response).as("application/json");
     }
 
-    private static String getInfo(String domain) {
+    private static String sendPing(String host, int port) {
         try {
-            Socket s = new Socket(domain, PORT);
+            Socket s = new Socket(host, port);
 
             // 送信
             OutputStream os = s.getOutputStream();
@@ -35,10 +36,10 @@ public class ServerListPing extends Controller {
             addVarInt(req, PROTOCOL_VERSION);
 
             //// server address
-            addString(req, domain);
+            addString(req, host);
 
             //// server port
-            addShort(req, PORT);
+            addShort(req, port);
 
             //// next state
             req.add((byte) 1);
@@ -107,7 +108,7 @@ public class ServerListPing extends Controller {
         } while (value != 0);
     }
 
-    public static int readVarInt(DataInputStream dis) throws IOException {
+    private static int readVarInt(DataInputStream dis) throws IOException {
         int numRead = 0;
         int result = 0;
         byte read;
