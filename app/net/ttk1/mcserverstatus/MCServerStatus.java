@@ -1,6 +1,7 @@
 package net.ttk1.mcserverstatus;
 
 import com.google.inject.Singleton;
+import play.Application;
 import play.mvc.*;
 
 import java.io.*;
@@ -14,10 +15,8 @@ public class MCServerStatus extends Controller {
     private static final int PROTOCOL_VERSION = 0;
     private static final int SO_TIMEOUT = 1000;
 
-    private int count = 0;
-
-    public Result test() {
-        return Results.ok(String.valueOf(count++));
+    public Result version() {
+        return Results.ok("{\"version\": \""+BuildInfo.version()+"\"}").as("application/json");
     }
 
     public Result status(String host, int port) throws IOException {
