@@ -1,2 +1,5 @@
-# GET     /server/$domain<[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}>                           net.ttk1.ServerListPing.ping(domain: String)
-GET     /server/$host<[a-zA-Z0-9\.]*>/$port<[1-9][0-9]{0,4}>                           net.ttk1.ServerListPing.ping(host: String, port: Integer)
+GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>/$port<[1-9][0-9]{0,4}>    net.ttk1.mcserverstatus.MCServerStatus.status(host: String, port: Integer)
+GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>/$port<[1-9][0-9]{0,4}>/    net.ttk1.mcserverstatus.MCServerStatus.status(host: String, port: Integer)
+
+GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>    net.ttk1.mcserverstatus.MCServerStatus.status(host: String, port: Integer ?= 25565)
+GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>/    net.ttk1.mcserverstatus.MCServerStatus.status(host: String, port: Integer ?= 25565)

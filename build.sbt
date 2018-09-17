@@ -1,4 +1,4 @@
-name := """play-java"""
+name := """MCServerStatus"""
 
 version := "1.0-SNAPSHOT"
 

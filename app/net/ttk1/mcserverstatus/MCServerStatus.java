@@ -1,4 +1,4 @@
-package net.ttk1;
+package net.ttk1.mcserverstatus;
 
 import play.mvc.*;
 
@@ -8,92 +8,90 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerListPing extends Controller {
+public class MCServerStatus extends Controller {
     private static final int PROTOCOL_VERSION = 0;
+    private static final int SO_TIMEOUT = 1000;
 
-    public Result ping(String host, int port) {
-        return badRequest();
+    public Result status(String host, int port) throws IOException {
+        if (port > 65535) {
+            // port range check
+            return badRequest("{\"message\":\"port_out_of_range\"}").as("application/json");
+        }
 
-        //String response = sendPing(host, port);
-        //return ok(response).as("application/json");
+        String response = getStatus(host, port);
+        return ok(response).as("application/json");
     }
 
-    private static String sendPing(String host, int port) {
-        try {
-            Socket s = new Socket(host, port);
+    private static String getStatus(String host, int port) throws IOException {
+        Socket s = new Socket(host, port);
+        s.setSoTimeout(SO_TIMEOUT);
 
-            // 送信
-            OutputStream os = s.getOutputStream();
-            DataOutputStream dos = new DataOutputStream(os);
+        // 送信
+        OutputStream os = s.getOutputStream();
+        DataOutputStream dos = new DataOutputStream(os);
 
-            List<Byte> req = new ArrayList<>();
+        List<Byte> req = new ArrayList<>();
 
-            // handshaking
-            //// packet ID
-            req.add((byte) 0x00);
+        // handshaking
+        //// packet ID
+        req.add((byte) 0x00);
 
-            //// protocol version
-            addVarInt(req, PROTOCOL_VERSION);
+        //// protocol version
+        addVarInt(req, PROTOCOL_VERSION);
 
-            //// server address
-            addString(req, host);
+        //// server address
+        addString(req, host);
 
-            //// server port
-            addShort(req, port);
+        //// server port
+        addShort(req, port);
 
-            //// next state
-            req.add((byte) 1);
+        //// next state
+        req.add((byte) 1);
 
-            //// add length
-            addLength(req, req.size());
+        //// add length
+        addLength(req, req.size());
 
-            //// send packet
-            dos.write(toByteArray(req));
+        //// send packet
+        dos.write(toByteArray(req));
 
 
-            // status
-            req = new ArrayList<>();
+        // status
+        req = new ArrayList<>();
 
-            //// packet ID
-            req.add((byte) 0x00);
+        //// packet ID
+        req.add((byte) 0x00);
 
-            //// add length
-            addLength(req, req.size());
+        //// add length
+        addLength(req, req.size());
 
-            //// send packet
-            dos.write(toByteArray(req));
+        //// send packet
+        dos.write(toByteArray(req));
 
-            // 受信
-            InputStream is = s.getInputStream();
-            DataInputStream dis = new DataInputStream(is);
-            //BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        // 受信
+        InputStream is = s.getInputStream();
+        DataInputStream dis = new DataInputStream(is);
 
-            int packetLen = readVarInt(dis);
-            System.out.println(packetLen);
-            //// packet ID
-            byte packetID = dis.readByte();
+        int packetLen = readVarInt(dis);
+        //// packet ID
+        byte packetID = dis.readByte();
 
-            //// Server List Ping
-            String msg;
-            if (packetID == 0x00) {
-                int len = readVarInt(dis);
-                byte[] res = new byte[len];
-                for (int i = 0; i < len; i++) {
-                    res[i] = dis.readByte();
-                }
-                msg = new String(res, "UTF-8");
-            } else {
-                msg = "{none}";
+        //// Server List Ping
+        String response;
+        if (packetID == 0x00) {
+            int len = readVarInt(dis);
+            byte[] res = new byte[len];
+            for (int i = 0; i < len; i++) {
+                res[i] = dis.readByte();
             }
-            // ストリームを閉じる
-            dis.close();
-            dos.close();
-
-            return msg;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "{error}";
+            response = new String(res, "UTF-8");
+        } else {
+            response = "{\"message\":\"no_information\"}";
         }
+        // ストリームを閉じる
+        dis.close();
+        dos.close();
+
+        return response;
     }
 
     private static void addVarInt(List<Byte> list, int value) {

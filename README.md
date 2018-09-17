@@ -1,4 +1,4 @@
-# ServerListPingAPI
+# MCServerStatus
 
 Minecraftサーバーにpingを送って返ってきた情報を表示するWebAPI
 
