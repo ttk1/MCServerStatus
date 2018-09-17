@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/MCServerStatus -Dhttp.port=${PORT} -Dplay.crypto.secret=${APPLICATION_SECRET}
+web: target/universal/stage/bin/mcserverstatus -Dhttp.port=${PORT} -Dplay.crypto.secret=${APPLICATION_SECRET}
