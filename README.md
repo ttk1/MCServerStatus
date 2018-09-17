@@ -1,7 +1,7 @@
 # MCServerStatus
 
 ## 概要
-ServerListPing(https://wiki.vg/Server_List_Ping)をJavaで実装し、WebAPIとして利用できるようにしたもの。
+ServerListPing( https://wiki.vg/Server_List_Ping )をJavaで実装し、WebAPIとして利用できるようにしたもの。
 
 ServerListPing実装部分はこれ  
 https://github.com/ttk1/ServerListPing  
