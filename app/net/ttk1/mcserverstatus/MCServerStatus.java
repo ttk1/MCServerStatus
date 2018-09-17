@@ -24,6 +24,8 @@ public class MCServerStatus extends Controller {
 
     private static String getStatus(String host, int port) throws IOException {
         Socket s = new Socket(host, port);
+
+        // timeout
         s.setSoTimeout(SO_TIMEOUT);
 
         // 送信
