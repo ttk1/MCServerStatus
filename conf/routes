@@ -3,3 +3,5 @@ GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>/$p
 
 GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>    net.ttk1.mcserverstatus.MCServerStatus.status(host: String, port: Integer ?= 25565)
 GET    /server/$host<([A-Za-z0-9][A-Za-z0-9\-]{1,61}[A-Za-z0-9]\.)+[A-Za-z]+>/    net.ttk1.mcserverstatus.MCServerStatus.status(host: String, port: Integer ?= 25565)
+
+GET    /test    net.ttk1.mcserverstatus.MCServerStatus.test
