@@ -24,8 +24,3 @@ GET /server/minecraft.example.com/12345
 ## 注意
 hostとしてIPアドレスを指定することはできません。  
 自分用で使う程度にしか作りこんでません。使う際は自己責任で。
-
-## デモ
-Herokuにデプロイしてみました。
-
-https://mysterious-coast-80163.herokuapp.com/version
